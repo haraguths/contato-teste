@@ -1,16 +1,16 @@
 package com.api.contatos.services;
 
 import com.api.contatos.dtos.ContatoDto;
-import com.api.contatos.dtos.EnderecoDto;
 import com.api.contatos.models.Contato;
 import com.api.contatos.models.Endereco;
 import com.api.contatos.repositories.ContatoRepository;
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +27,10 @@ public class ContatoService {
     public Contato salvar(ContatoDto contatoDto) {
         Contato contato = copiaPropriedadesContato(contatoDto);
         return contatoRepository.save(contato);
+    }
+
+    public Optional<Contato> getContato(UUID id) {
+        return contatoRepository.findById(id);
     }
 
     private Contato copiaPropriedadesContato(ContatoDto contatoDto) {
