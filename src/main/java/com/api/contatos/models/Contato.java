@@ -18,6 +18,7 @@ public class Contato implements Serializable {
     public Contato() {
     }
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
