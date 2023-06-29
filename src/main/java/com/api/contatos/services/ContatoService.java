@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -31,6 +32,13 @@ public class ContatoService {
 
     public Optional<Contato> getContato(UUID id) {
         return contatoRepository.findById(id);
+    }
+
+    public void deleteContato(UUID id) {
+        Contato contato = contatoRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Contato não encontrado"));
+
+        contatoRepository.delete(contato);
     }
 
     private Contato copiaPropriedadesContato(ContatoDto contatoDto) {

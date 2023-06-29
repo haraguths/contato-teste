@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,16 +24,26 @@ public class ContatoController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody @Valid ContatoDto contatoDto){
+    public ResponseEntity<Contato> create(@RequestBody @Valid ContatoDto contatoDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(contatoService.salvar(contatoDto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getContato(@PathVariable(value = "id") UUID id){
+    public ResponseEntity<Contato> getContato(@PathVariable(value = "id") UUID id) {
         Optional<Contato> contato = contatoService.getContato(id);
-        if(contato.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contato não encontrado");
 
-        return ResponseEntity.status(HttpStatus.OK).body(contato.get());
+        return contato.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteContato(@PathVariable(value = "id") UUID id){
+        try {
+            contatoService.deleteContato(id);
+            return ResponseEntity.ok("Contato excluído com sucesso");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Contato não encontrado");
+        }
     }
 }
