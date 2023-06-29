@@ -5,8 +5,11 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.UUID;
+
 public class EnderecoDto {
 
+    private UUID id;
     @NotNull
     private Long numero;
     @Size(max=255)
@@ -14,6 +17,14 @@ public class EnderecoDto {
     private String rua;
     @NotEmpty
     private String cep;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public Long getNumero() {
         return numero;

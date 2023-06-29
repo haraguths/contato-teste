@@ -34,9 +34,10 @@ public class Contato implements Serializable {
     @Column(nullable = true)
     private LocalDate dataNascimento;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "contato_id", nullable = false)
     private List<Endereco> enderecos = new ArrayList<>();
+
 
     public UUID getId() {
         return id;

@@ -46,4 +46,17 @@ public class ContatoController {
                     .body("Contato não encontrado");
         }
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<String> updateParcialContato(@PathVariable(value = "id") UUID id,
+                                                @RequestBody @Valid ContatoDto contatoDto){
+        try {
+            contatoService.updateParcialContato(id, contatoDto);
+            return ResponseEntity.ok("Contato atualizado com sucesso");
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Contato não encontrado");
+        }
+    }
+
 }
